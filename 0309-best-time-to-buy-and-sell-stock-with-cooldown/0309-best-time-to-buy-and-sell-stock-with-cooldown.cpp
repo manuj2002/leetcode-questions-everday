@@ -1,28 +1,14 @@
 class Solution {
 public:
-  map<pair<int,int>,int>dp;
- int dfs(int i,int buy,vector<int>& prices)
- {
-     if(dp.count({i,buy})>0)
-          return(dp[{i,buy}]);
-     if(i>=prices.size())
-     {
-         return(dp[{i,buy}]=0);
-     }
-     int ans=0;
-     if(buy==1)
-     {
-         ans=max(ans,dfs(i+1,0,prices)-prices[i]);
-         ans=max(ans,dfs(i+1,1,prices));
-     }
-     else
-     {
-         ans=max(ans,dfs(i+2,1,prices)+prices[i]);
-         ans=max(ans,dfs(i+1,0,prices));
-     }   
-     return(dp[{i,buy}]=ans);
- }
+
     int maxProfit(vector<int>& prices) {
-      return(dfs(0,1,prices));
+        int n=prices.size();
+      vector<vector<int>>dp(n+3,vector<int>(2,0));
+        for(int i=n-1;i>=0;i--)
+        {
+            dp[i][0]=max(dp[i+1][0],dp[i+2][1]+prices[i]);
+            dp[i][1]=max(dp[i+1][1],dp[i+1][0]-prices[i]);
+        }
+        return(dp[0][1]);
     }
 };
